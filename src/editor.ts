@@ -3,18 +3,18 @@ import { LitElement, html, TemplateResult, css, CSSResultGroup } from 'lit';
 import { HomeAssistant, fireEvent, LovelaceCardEditor } from 'custom-card-helpers';
 
 import { ScopedRegistryHost } from '@lit-labs/scoped-registry-mixin';
-import { BoilerplateCardConfig } from './types';
+import { GoogleFontsCardConfig } from './types';
 import { customElement, property, state } from 'lit/decorators';
 import { formfieldDefinition } from '../elements/formfield';
 import { selectDefinition } from '../elements/select';
 import { switchDefinition } from '../elements/switch';
 import { textfieldDefinition } from '../elements/textfield';
 
-@customElement('boilerplate-card-editor')
-export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
+@customElement('google-fonts-card-editor')
+export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implements LovelaceCardEditor {
   @property({ attribute: false }) public hass?: HomeAssistant;
 
-  @state() private _config?: BoilerplateCardConfig;
+  @state() private _config?: GoogleFontsCardConfig;
 
   @state() private _helpers?: any;
 
@@ -27,7 +27,7 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     ...formfieldDefinition,
   };
 
-  public setConfig(config: BoilerplateCardConfig): void {
+  public setConfig(config: GoogleFontsCardConfig): void {
     this._config = config;
 
     this.loadCardHelpers();
@@ -41,8 +41,12 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     return true;
   }
 
-  get _name(): string {
-    return this._config?.name || '';
+  get _heading(): string {
+    return this._config?.heading || '';
+  }
+
+  get _font(): string {
+    return this._config?.font || '';
   }
 
   get _entity(): string {
@@ -51,6 +55,18 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
 
   get _show_warning(): boolean {
     return this._config?.show_warning || false;
+  }
+
+  get _show_blob(): boolean {
+    return this._config?.show_blob || false;
+  }
+
+  get _color_gradient_top(): string {
+    return this._config?.color_gradient_top || '';
+  }
+
+  get _color_gradient_bottom(): string {
+    return this._config?.color_gradient_bottom || '';
   }
 
   get _show_error(): boolean {
@@ -63,26 +79,19 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
     }
 
     // You can restrict on domain type
-    const entities = Object.keys(this.hass.states);
+    // const entities = Object.keys(this.hass.states);
 
     return html`
-      <mwc-select
-        naturalMenuWidth
-        fixedMenuPosition
-        label="Entity (Required)"
-        .configValue=${'entity'}
-        .value=${this._entity}
-        @selected=${this._valueChanged}
-        @closed=${(ev) => ev.stopPropagation()}
-      >
-        ${entities.map((entity) => {
-          return html`<mwc-list-item .value=${entity}>${entity}</mwc-list-item>`;
-        })}
-      </mwc-select>
       <mwc-textfield
-        label="Name (Optional)"
-        .value=${this._name}
-        .configValue=${'name'}
+        label="Heading (Required)"
+        .value=${this._heading}
+        .configValue=${'heading'}
+        @input=${this._valueChanged}
+      ></mwc-textfield>
+      <mwc-textfield
+        label="Google Font Name (Required)"
+        .value=${this._font}
+        .configValue=${'font'}
         @input=${this._valueChanged}
       ></mwc-textfield>
       <mwc-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
@@ -99,6 +108,27 @@ export class BoilerplateCardEditor extends ScopedRegistryHost(LitElement) implem
           @change=${this._valueChanged}
         ></mwc-switch>
       </mwc-formfield>
+      <mwc-formfield .label=${`Toggle blob ${this._show_blob ? 'off' : 'on'}`}>
+        <mwc-switch
+          .checked=${this._show_blob !== false}
+          .configValue=${'show_blob'}
+          @change=${this._valueChanged}
+        ></mwc-switch>
+      </mwc-formfield>
+      ${this._show_blob ? `
+          <mwc-textfield
+            label="Blob Color Gradient (Top)"
+            .value=${this._color_gradient_top}
+            .configValue=${'color_gradient_top'}
+            @input=${this._valueChanged}
+          ></mwc-textfield>
+          <mwc-textfield
+            label="Blob Color Gradient (Bottom)"
+            .value=${this._color_gradient_bottom}
+            .configValue=${'color_gradient_bottom'}
+            @input=${this._valueChanged}
+          ></mwc-textfield>
+        ` : null}
     `;
   }
 
