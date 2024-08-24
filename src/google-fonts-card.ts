@@ -94,7 +94,7 @@ export class GoogleFontsCard extends LitElement {
     }
         // used to set our custom property values
         // let noiseStep = 0.0005;
-        const noiseStep = 0.01;
+        const noiseStep = parseInt(this.config?.blob_animation_speed || '0.01');
         
         // const simplex = new SimplexNoise();
         
