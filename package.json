@@ -1,6 +1,6 @@
 {
   "name": "google-fonts-header-card",
-  "version": "1.4.1",
+  "version": "0.1.2",
   "description": "A Lovelace card to display headers using Google Fonts in your Home Assistant Dashboards",
   "keywords": [
     "home-assistant",

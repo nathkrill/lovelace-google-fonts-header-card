@@ -115,7 +115,7 @@ export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implem
           @change=${this._valueChanged}
         ></mwc-switch>
       </mwc-formfield>
-      ${this._show_blob ? `
+      ${this._show_blob ? html`
           <mwc-textfield
             label="Blob Color Gradient (Top)"
             .value=${this._color_gradient_top}
