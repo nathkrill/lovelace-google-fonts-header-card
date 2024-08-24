@@ -39,7 +39,7 @@ const plugins = [
 
 export default [
   {
-    input: 'src/google-fonts-card.ts',
+    input: 'src/google-fonts-header-card.ts',
     output: {
       dir: 'dist',
       format: 'es',

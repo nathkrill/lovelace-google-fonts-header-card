@@ -2,7 +2,7 @@ import { ActionConfig, LovelaceCard, LovelaceCardConfig, LovelaceCardEditor } fr
 
 declare global {
   interface HTMLElementTagNameMap {
-    'google-fonts-card-editor': LovelaceCardEditor;
+    'google-fonts-header-card-editor': LovelaceCardEditor;
     'hui-error-card': LovelaceCard;
   }
   interface Point {

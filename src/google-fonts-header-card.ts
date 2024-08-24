@@ -26,7 +26,7 @@ console.info(
 // This puts your card into the UI card picker dialog
 (window as any).customCards = (window as any).customCards || [];
 (window as any).customCards.push({
-  type: 'google-fonts-card',
+  type: 'google-fonts-header-card',
   name: 'Google Fonts Header Card',
   description: 'A Lovelace card to display headers using Google Fonts in your Home Assistant Dashboards',
 });
@@ -40,11 +40,11 @@ function loadCSS(url: string) {
 }
 
 // TODO Name your custom element
-@customElement('google-fonts-card')
+@customElement('google-fonts-header-card')
 export class GoogleFontsCard extends LitElement {
   public static async getConfigElement(): Promise<LovelaceCardEditor> {
     await import('./editor');
-    return document.createElement('google-fonts-card-editor');
+    return document.createElement('google-fonts-header-card-editor');
   }
 
   public static getStubConfig(): Record<string, unknown> {

@@ -10,7 +10,7 @@
     "lovelace",
     "custom-cards"
   ],
-  "module": "google-fonts-card.js",
+  "module": "google-fonts-header-card.js",
   "repository": "https://github.com/nathkrill/lovelace-google-fonts-header-card",
   "author": "Nathan Akrill <nathan.akrill@gmail.com>",
   "license": "MIT",

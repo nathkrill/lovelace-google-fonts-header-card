@@ -10,7 +10,7 @@ import { ignoreSelectFiles } from './elements/ignore/select';
 import { ignoreSwitchFiles } from './elements/ignore/switch';
 
 export default {
-  input: ['src/google-fonts-card.ts'],
+  input: ['src/google-fonts-header-card.ts'],
   output: {
     dir: './dist',
     format: 'es',
