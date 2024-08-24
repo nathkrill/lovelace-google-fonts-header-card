@@ -1,1 +1,1 @@
-export{G as GoogleFontsCard}from"./google-fonts-header-card-240b83a4.js";
+export{G as GoogleFontsCard}from"./google-fonts-header-card-261895c3.js";

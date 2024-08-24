@@ -9,6 +9,7 @@ import {
   LovelaceCardEditor,
   getLovelace,
 } from 'custom-card-helpers'; // This is a community maintained npm module with common helper functions/types. https://github.com/custom-cards/custom-card-helpers
+import registerTemplates from 'ha-template';
 
 import type { GoogleFontsCardConfig } from './types';
 import { CARD_VERSION } from './const';
@@ -39,6 +40,7 @@ function loadCSS(url: string) {
   document.head.appendChild(link);
 }
 
+registerTemplates();
 // TODO Name your custom element
 @customElement('google-fonts-header-card')
 export class GoogleFontsCard extends LitElement {
@@ -204,7 +206,11 @@ export class GoogleFontsCard extends LitElement {
       <div class='header'>
           <h1 style='--g-head-title-font-size: ${this.config.font_size ? this.config.font_size : null}; --g-head-title-font-weight: ${this.config.font_weight ? this.config.font_weight : null}; --g-head-title-font-weight: ${this.config.weight ? this.config.weight : null};'>
             ${this.config.show_blob ? this.renderSVG() : null}
-            ${this.config.heading}
+            <ha-template
+              hass=${this.hass}
+              template=${this.config.heading}
+              value=${''}
+            ></ha-template>
         </h1>
       </div>
     `;
