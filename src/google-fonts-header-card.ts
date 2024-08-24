@@ -14,7 +14,7 @@ import type { GoogleFontsCardConfig } from './types';
 import { CARD_VERSION } from './const';
 import { localize } from './localize/localize';
 import { spline } from "@georgedoescode/spline";
-import * as SimplexNoise from "simplex-noise";
+import { createNoise2D } from 'simplex-noise';
 
 /* eslint no-console: 0 */
 console.info(
@@ -93,52 +93,53 @@ export class GoogleFontsCard extends LitElement {
     }
         // used to set our custom property values
         // let noiseStep = 0.0005;
-        const noiseStep = parseInt(this.config?.blob_animation_speed || '0.01');
+        const noiseStep = parseFloat(this.config?.blob_animation_speed || '0.01');
         
-        // const simplex = new SimplexNoise();
+        const noise2D = createNoise2D();
         
-        const points = createPoints();
+        let points = createPoints();
         
         (function animate() {
             if (!path) {
                 return;
             }
-        path.setAttribute("d", spline(points, 1, true));
         
         // for every point...
+        const newPoints : Point[] = []
         for (let i = 0; i < points.length; i++) {
             const point = points[i];
-        
             // return a pseudo random value between -1 / 1 based on this point's current x, y positions in "time"
-            const nX = noise(point.noiseOffsetX, point.noiseOffsetX);
-            const nY = noise(point.noiseOffsetY, point.noiseOffsetY);
+            const nX = getNoise(point.noiseOffsetX, point.noiseOffsetX);
+            const nY = getNoise(point.noiseOffsetY, point.noiseOffsetY);
             // map this noise value to a new value, somewhere between it's original location -20 and it's original location + 20
             const x = map(nX, -1, 1, point.originX - 10, point.originX + 10);
             const y = map(nY, -1, 1, point.originY - 10, point.originY + 10);
-        
-            // update the point's current coordinates
-            point.x = x;
-            point.y = y;
-        
-            // progress the point's x, y values through "time"
-            point.noiseOffsetX += noiseStep;
-            point.noiseOffsetY += noiseStep;
+
+            newPoints.push({
+              x: x,
+              y: y,
+              // we need to keep a reference to the point's original point for when we modulate the values later
+              originX: point.originX,
+              originY: point.originY,
+              noiseOffsetX: point.noiseOffsetX + noiseStep,
+              noiseOffsetY: point.noiseOffsetY + noiseStep
+            });
         }
+        points = newPoints
         
         //   root.style.setProperty("--startColor", `hsl(${hue}, 100%, 75%)`);
         //   root.style.setProperty("--stopColor", `hsl(${hue + 60}, 100%, 75%)`);
         
-        
-        requestAnimationFrame(animate);
+          path.setAttribute("d", spline(points, 1, true));
+          requestAnimationFrame(animate)
         })();
         
         function map(n, start1, end1, start2, end2) {
         return ((n - start1) / (end1 - start1)) * (end2 - start2) + start2;
         }
         
-        function noise(x, y) {
-          const noise2D = SimplexNoise.createNoise2D()
-          return noise2D(x, y);
+        function getNoise(x, y) {
+          return noise2D(x, y)
         }
         
         function createPoints(): Array<Point> {
@@ -179,8 +180,8 @@ export class GoogleFontsCard extends LitElement {
       <svg class='blob' viewBox="0 0 200 200">
           <defs>
               <linearGradient id="gradient" gradientTransform="rotate(90)">
-                <stop id="gradientStop1" offset="0%" stop-color="${this.config.color_gradient_top}" />
-                <stop id="gradientStop2 " offset="100%" stop-color="${this.config.color_gradient_bottom}" />
+                <stop id="gradientStop1" offset="0%" stop-color="${this.config?.color_gradient_top || 'var(--primary-color)'}" />
+                <stop id="gradientStop2 " offset="100%" stop-color="${this.config.color_gradient_bottom || 'var(--accent-color)'}" />
               </linearGradient>
           </defs>
           <path d="" fill="url('#gradient')"></path>
@@ -201,7 +202,7 @@ export class GoogleFontsCard extends LitElement {
 
     return html`
       <div class='header'>
-        <h1 style='--mush-title-font-size: ${this.config.size ? this.config.size : null};'>
+          <h1 style='--g-head-title-font-size: ${this.config.font_size ? this.config.font_size : null}; --g-head-title-font-weight: ${this.config.font_weight ? this.config.font_weight : null}; --g-head-title-font-weight: ${this.config.weight ? this.config.weight : null};'>
             ${this.config.show_blob ? this.renderSVG() : null}
             ${this.config.heading}
         </h1>
@@ -230,9 +231,9 @@ export class GoogleFontsCard extends LitElement {
       :host,h1 {
           font-family: var(--google-font), inherit;
           color: var(--md-sys-color-on-surface,inherit);
-          font-size: var(--mush-title-font-size, 1em);
-          font-weight: var(--mush-title-font-weight, 900);
-          line-height: var(--mush-title-line-height,1);
+          font-size: var(--g-head-title-font-size, 1em);
+          font-weight: var(--g-head-title-font-weight, 900);
+          line-height: var(--g-head-title-line-height,1);
       }
       .header {
           padding: var(--mush-title-padding, 24px 12px 16px)
