@@ -62,11 +62,15 @@ export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implem
   }
 
   get _color_gradient_top(): string {
-    return this._config?.color_gradient_top || '';
+    return this._config?.color_gradient_top || 'var(--primary-color)';
   }
 
   get _color_gradient_bottom(): string {
-    return this._config?.color_gradient_bottom || '';
+    return this._config?.color_gradient_bottom || 'var(--accent-color)';
+  }
+
+  get _blob_animation_speed(): string {
+    return this._config?.blob_animation_speed || '0.01';
   }
 
   get _show_error(): boolean {
@@ -126,6 +130,12 @@ export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implem
             label="Blob Color Gradient (Bottom)"
             .value=${this._color_gradient_bottom}
             .configValue=${'color_gradient_bottom'}
+            @input=${this._valueChanged}
+          ></mwc-textfield>
+          <mwc-textfield
+            label="Blob Animation Speed"
+            .value=${this._blob_animation_speed}
+            .configValue=${'blob_animation_speed'}
             @input=${this._valueChanged}
           ></mwc-textfield>
         ` : null}

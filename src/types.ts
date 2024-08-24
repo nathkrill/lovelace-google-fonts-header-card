@@ -23,7 +23,5 @@ export interface GoogleFontsCardConfig extends LovelaceCardConfig {
   show_blob?: boolean;
   color_gradient_top?: string;
   color_gradient_bottom?: string;
-  show_warning?: boolean;
-  show_error?: boolean;
-  test_gui?: boolean;
+  blob_animation_speed?: string;
 }
