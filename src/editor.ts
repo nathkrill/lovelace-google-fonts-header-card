@@ -49,12 +49,12 @@ export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implem
     return this._config?.font || '';
   }
 
-  get _entity(): string {
-    return this._config?.entity || '';
+  get _font_size(): string {
+    return this._config?.font_size || '';
   }
 
-  get _show_warning(): boolean {
-    return this._config?.show_warning || false;
+  get _font_weight(): string {
+    return this._config?.font_weight || '';
   }
 
   get _show_blob(): boolean {
@@ -71,10 +71,6 @@ export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implem
 
   get _blob_animation_speed(): string {
     return this._config?.blob_animation_speed || '0.01';
-  }
-
-  get _show_error(): boolean {
-    return this._config?.show_error || false;
   }
 
   protected render(): TemplateResult | void {
@@ -98,20 +94,18 @@ export class GoogleFontsCardEditor extends ScopedRegistryHost(LitElement) implem
         .configValue=${'font'}
         @input=${this._valueChanged}
       ></mwc-textfield>
-      <mwc-formfield .label=${`Toggle warning ${this._show_warning ? 'off' : 'on'}`}>
-        <mwc-switch
-          .checked=${this._show_warning !== false}
-          .configValue=${'show_warning'}
-          @change=${this._valueChanged}
-        ></mwc-switch>
-      </mwc-formfield>
-      <mwc-formfield .label=${`Toggle error ${this._show_error ? 'off' : 'on'}`}>
-        <mwc-switch
-          .checked=${this._show_error !== false}
-          .configValue=${'show_error'}
-          @change=${this._valueChanged}
-        ></mwc-switch>
-      </mwc-formfield>
+      <mwc-textfield
+        label="Font Size (default 1em)"
+        .value=${this._font_size}
+        .configValue=${'font_size'}
+        @input=${this._valueChanged}
+      ></mwc-textfield>
+      <mwc-textfield
+        label="Font Weight (default 900)"
+        .value=${this._font_weight}
+        .configValue=${'font_weight'}
+        @input=${this._valueChanged}
+      ></mwc-textfield>
       <mwc-formfield .label=${`Toggle blob ${this._show_blob ? 'off' : 'on'}`}>
         <mwc-switch
           .checked=${this._show_blob !== false}

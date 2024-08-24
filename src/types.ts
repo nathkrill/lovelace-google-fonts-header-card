@@ -20,6 +20,8 @@ export interface GoogleFontsCardConfig extends LovelaceCardConfig {
   type: string;
   heading?: string;
   font?: string;
+  font_size?: string;
+  font_weight?: string;
   show_blob?: boolean;
   color_gradient_top?: string;
   color_gradient_bottom?: string;
